@@ -8,13 +8,13 @@ export const register = async (req, res) => {
   const { name, email, password } = req;
 
   if (!name || !email || !password) {
-    return res.status(400).json({ message: "Enter all the details!" });
+    return { message: "Enter all the details!", success: false };
   }
 
   try {
     const verifyEmail = await userModel.findOne({ email: email });
     if (verifyEmail) {
-      return { message: "Email already registered!" };
+      return { message: "Email already registered!", success: false };
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -34,10 +34,10 @@ export const register = async (req, res) => {
 
     await cart.save();
 
-    return res.status(201).json({
+    return {
       message: "User registered successfully!",
       success: true,
-    });
+    };
   } catch (error) {
     return res.status(500).json({ error: error });
   }

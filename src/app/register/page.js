@@ -28,21 +28,22 @@ const Register = () => {
       },
       body: JSON.stringify(formData),
     });
-    console.log(response);
+    // console.log(response);
 
-    // const data = await response.json();
-    // setMessage(data.message);
+    const data = await response.json();
 
-    // if (data.success) {
-    //   setFormData({ name: "", email: "", password: "" });
-    // }
+    setMessage(data.message);
+
+    if (data.success) {
+      setFormData({ name: "", email: "", password: "" });
+    }
   };
 
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm"
+        className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm text-black"
       >
         <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
         {message && <p className="text-center mb-4">{message}</p>}
