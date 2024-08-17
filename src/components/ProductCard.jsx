@@ -1,6 +1,6 @@
 import React from "react";
 
-const ProductPage = () => {
+const ProductCard = () => {
   return (
     <>
       <div class="group my-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
@@ -52,4 +52,4 @@ const ProductPage = () => {
   );
 };
 
-export default ProductPage;
+export default ProductCard;
