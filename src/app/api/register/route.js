@@ -1,5 +1,5 @@
+import { register } from "@/utils/auth";
 import { NextResponse } from "next/server";
-import { register } from "@/utils/register";
 
 export async function POST(req) {
   try {
@@ -7,7 +7,7 @@ export async function POST(req) {
 
     const response = await register({ name, email, password });
 
-    return NextResponse.json(response);
+    return NextResponse.json(response, { status: response.status });
   } catch (error) {
     return NextResponse.json(
       {
