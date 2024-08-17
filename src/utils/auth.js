@@ -114,3 +114,21 @@ export const login = async (req) => {
   }
 };
 
+
+export const decodeToken = async (request) => {
+  try {
+    console.log("decoding....");
+    const token = request.cookies.get("token")?.value || "";
+    console.log(token);
+    if (!token) {
+      throw new Error("Token not found");
+    }
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
+    console.log(decodedToken);
+    return decodedToken.id;
+  } catch (error) {
+    console.error("Error decoding token:", error.message);
+    throw new Error(error.message); // Rethrow error to be caught in POST handler
+  }
+};
+
