@@ -17,23 +17,23 @@ export default function Login() {
   };
 
   const handleSubmit = async (e) => {
-    // e.preventDefault();
+    e.preventDefault();
 
-    // const response = await fetch("/api/login", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(formData),
-    // });
+    const response = await fetch("/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
 
-    // const data = await response.json();
+    const data = await response.json();
 
-    // setMessage(data.message);
+    setMessage(data.message);
 
-    // if (data.success) {
-    //   setFormData({ email: "", password: "" });
-    // }
+    if (data.success) {
+      setFormData({ email: "", password: "" });
+    }
     console.log("ok");
   };
 

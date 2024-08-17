@@ -3,6 +3,7 @@ import userModel from "@/models/userModel";
 import cartModel from "@/models/cartModel";
 import { dbConnect } from "@/utils/dbConnect";
 import { NextResponse } from "next/server";
+import jwt from "jsonwebtoken";
 
 export const register = async (req) => {
   await dbConnect();
@@ -98,23 +99,18 @@ export const login = async (req) => {
       }
     );
 
-    const response = NextResponse.json({
-      message: "Login successful",
+    return {
       success: true,
-    });
-
-    response.cookies.set("token", jwtToken, {
-      httpOnly: true,
-      sameSite: "None",
-      secure: true, // for production
-      maxAge: 4 * 60 * 60 * 1000,
-    });
-
-    // res.header("Access-Control-Allow-Credentials", "true");
-    console.log("cookie sent", jwtToken);
-
-    return response;
+      message: "Login successful",
+      token: jwtToken,
+      status: 200,
+    };
   } catch (error) {
-    return { error: error.message, status: 500 };
+    return {
+      success: false,
+      message: error.message,
+      status: 500,
+    };
   }
 };
+
