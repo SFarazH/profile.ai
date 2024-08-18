@@ -2,6 +2,23 @@ import React from "react";
 import { FaShoppingCart } from "react-icons/fa";
 
 const ProductCard = ({ data }) => {
+  const addToCart = async (productId) => {
+    try {
+      const response = await fetch("/api/cart/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ productId }),
+      });
+
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
+  };
+
   return (
     <>
       <div className="group my-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
@@ -26,7 +43,7 @@ const ProductCard = ({ data }) => {
           </div>
           <div
             className="cursor-pointer flex relative bottom-0 items-center gap-4 justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-md font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
-            onClick={() => console.log(data)}
+            onClick={() => addToCart(data.id)}
           >
             <FaShoppingCart size={25} />
             Add to cart

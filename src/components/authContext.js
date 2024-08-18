@@ -11,13 +11,12 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [authUser, setAuthUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  // const [temp, setTemp] = useState(0);
   
   const verifyUser = async () => {
     try {
       const response = await fetch("/api/verify", {
         method: "POST",
-        credentials: "include", // Ensure cookies are sent
+        credentials: "include", 
       });
 
       const data = await response.json();
@@ -38,23 +37,6 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     verifyUser();
   }, []);
-  //   const verifyUser = async () => {
-  //     const config = {
-  //       url: `${process.env.REACT_APP_BACKEND_LINK}/auth/verify`,
-  //       method: "get",
-  //       withCredentials: true,
-  //     };
-  //     axios(config)
-  //       .then((res) => setAuthUser(res.data))
-  //       .catch((error) => {
-  //         console.error(error);
-  //         setAuthUser(null);
-  //       })
-  //       .finally(() => setIsLoading(false));
-  //   };
-  //   useEffect(() => {
-  // verifyUser();
-  //   }, []);
 
   const value = {
     authUser,
