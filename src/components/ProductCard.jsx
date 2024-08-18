@@ -88,7 +88,7 @@ const ProductCard = ({ data }) => {
             <div className="fixed inset-0 bg-black opacity-70"></div>
             <div className="relative w-auto my-6 mx-auto max-w-3xl">
               <div className="rounded-lg shadow-lg relative flex flex-col w-full bg-white p-5">
-                <p className="font-semibold text-lg">
+                <p className="font-semibold text-lg text-black">
                   Please login to add to cart!
                 </p>
               </div>
