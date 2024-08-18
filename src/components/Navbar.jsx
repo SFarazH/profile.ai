@@ -5,18 +5,20 @@ import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { FaShoppingCart } from "react-icons/fa";
 import { useAuth } from "./authContext";
 import axios from "axios";
+import { useCart } from "./cartCountContext";
 
 const Navbar = () => {
-  const [cartCount, setCount] = useState(0);
-  useEffect(() => {
-    const getItems = async () => {
-      axios
-        .get("/api/cart/count", { withCredentials: true })
-        .then((res) => setCount(res.data.totalItems))
-        .catch((e) => console.error(e));
-    };
-    getItems();
-  }, []);
+  const { cartCount } = useCart();
+  // const [cartCount, setCount] = useState(0);
+  // useEffect(() => {
+  //   const getItems = async () => {
+  //     axios
+  //       .get("/api/cart/count", { withCredentials: true })
+  //       .then((res) => setCount(res.data.totalItems))
+  //       .catch((e) => console.error(e));
+  //   };
+  //   getItems();
+  // }, []);
   const { authUser, setAuthUser } = useAuth();
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
   const navLinkClasses =

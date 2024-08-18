@@ -1,7 +1,11 @@
 import React from "react";
 import { FaShoppingCart } from "react-icons/fa";
+import { useCart } from "./cartCountContext";
+
 
 const ProductCard = ({ data }) => {
+  const { fetchCartCount } = useCart();
+
   const addToCart = async (productId) => {
     try {
       const response = await fetch("/api/cart/add", {
@@ -14,6 +18,9 @@ const ProductCard = ({ data }) => {
 
       const data = await response.json();
       console.log(data);
+
+      // Fetch updated cart count
+      fetchCartCount();
     } catch (error) {
       console.error("Error adding to cart:", error);
     }
@@ -24,7 +31,7 @@ const ProductCard = ({ data }) => {
       <div className="group my-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
         <div className="relative mt-3 flex mx-auto h-72 overflow-hidden rounded-xl">
           <img
-            className="peer relative right-0 h-full  object-cover top-0"
+            className="peer relative right-0 h-full object-cover top-0"
             src={data.image}
             alt="product image"
           />

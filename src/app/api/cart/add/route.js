@@ -1,47 +1,47 @@
 import { NextResponse } from "next/server";
 import { decodeToken } from "@/utils/auth";
-import Cart from "@/models/cartModel";
+import cartModel from "@/models/cartModel";
 
 export async function POST(req) {
   try {
     const userId = await decodeToken(req);
-    console.log(userId);
     if (!userId) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
     const { productId } = await req.json();
-    if (!productId) {
+    if (productId === undefined) {
       return NextResponse.json(
         { message: "Product ID is required" },
         { status: 400 }
       );
     }
 
-    // Find the user's cart or create a new one
-    let cart = await Cart.findOne({ userID: userId });
-    if (!cart) {
-      cart = new Cart({ userID: userId, items: [] });
-    }
+    const productIdNumber = Number(productId);
 
-    // Ensure items is an array
-    const items = cart.items ?? [];
+    
+    let cart = await cartModel.findOne({ userID: userId });
 
-    // Check if the cart has items
-    const existingItem = items.find((item) => item.productId === productId);
+    // if (!cart) {
+    //   cart = new cartModel({ userID: userId, items: [] });
+    // }
 
-    if (existingItem) {
-      // Update the quantity if the product is already in the cart
-      existingItem.quantity += 1;
+    const itemIndex = cart.items.findIndex(
+      (item) => item.productId === productIdNumber
+    );
+
+    if (itemIndex > -1) {
+      
+      const result = await cartModel.findOneAndUpdate(
+        { userID: userId, 'items.productId': productIdNumber },
+        {
+          $inc: { 'items.$.quantity': 1 }
+        },
+        { new: true, upsert: true } 
+      );
     } else {
-      // Add the new product to the cart
-      items.push({ productId, quantity: 1 });
+      cart.items.push({ productId: productIdNumber, quantity: 1 });
     }
-
-    // Assign the updated items array back to the cart
-    cart.items = items;
-
-    // Save the cart instance
     await cart.save();
 
     return NextResponse.json({ message: "Product added to cart", cart });

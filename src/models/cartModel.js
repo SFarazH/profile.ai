@@ -7,11 +7,12 @@ const CartSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    items: {
-      type: [Object],
-      required: true,
-      default: [],
-    },
+    items: [
+      {
+        productId: { type: Number },
+        quantity: { type: Number, default: 1 },
+      },
+    ],
     discount: {
       type: Number,
       default: 0,
