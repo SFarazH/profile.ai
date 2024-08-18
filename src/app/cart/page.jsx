@@ -10,6 +10,7 @@ export default function Cart() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [cartItems, setCartItems] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
   const [temp, setTemp] = useState(0);
 
   const getCartDetails = async () => {
@@ -46,6 +47,18 @@ export default function Cart() {
     );
   };
 
+  // Calculate the total price whenever cartItems changes
+  useEffect(() => {
+    const calculateTotalPrice = () => {
+      const total = cartItems.reduce((total, item) => {
+        return total + item.product.price * item.quantity;
+      }, 0);
+      setTotalPrice(total);
+    };
+
+    calculateTotalPrice();
+  }, [cartItems]);
+
   useEffect(() => {
     getCartDetails();
   }, [temp]);
@@ -67,16 +80,18 @@ export default function Cart() {
   return (
     <div className="p-4">
       <h1>Your Cart</h1>
-
       <div className="bg-white px-4 py-6 sm:px-8 sm:py-10 w-full lg:w-2/3 mx-auto">
         {cartItems.map((item) => (
           <CartItem
             key={item.productId}
             data={item}
             onQuantityChange={updateCartItemQuantity}
-            setTemp = {setTemp}
+            setTemp={setTemp}
           />
         ))}
+      </div>
+      <div className="mt-4">
+        <h2>Total Price: ${totalPrice.toFixed(2)}</h2>
       </div>
     </div>
   );
