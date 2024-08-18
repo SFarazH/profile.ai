@@ -1,11 +1,22 @@
 "use client";
 import Link from "next/link";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { FaShoppingCart } from "react-icons/fa";
 import { useAuth } from "./authContext";
+import axios from "axios";
 
 const Navbar = () => {
+  const [cartCount, setCount] = useState(0);
+  useEffect(() => {
+    const getItems = async () => {
+      axios
+        .get("/api/cart/count", { withCredentials: true })
+        .then((res) => setCount(res.data.totalItems))
+        .catch((e) => console.error(e));
+    };
+    getItems();
+  }, []);
   const { authUser, setAuthUser } = useAuth();
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
   const navLinkClasses =
@@ -62,9 +73,13 @@ const Navbar = () => {
         </ul>
         {/* <Link href="/cart"> */}
         <FaShoppingCart className="text-white cursor-pointer" size={40} />
-        {authUser ? <p className="relative -top-5 -left-5 bg-blue-500 rounded-full p-1 ">
-          10
-        </p> : ""}
+        {authUser ? (
+          <p className="relative -top-5 -left-5 bg-blue-500 rounded-full p-1 ">
+            {cartCount}
+          </p>
+        ) : (
+          ""
+        )}
         {/* </Link> */}
 
         {/* Mobile Navigation Toggle */}
