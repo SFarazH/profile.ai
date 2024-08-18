@@ -5,14 +5,28 @@ import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { FaShoppingCart } from "react-icons/fa";
 import { useAuth } from "./authContext";
 import { useCart } from "./cartCountContext";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const { cartCount } = useCart();
+  const router = useRouter();
   const { authUser, setAuthUser } = useAuth();
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
 
   const toggleNavbar = () => {
     setIsNavbarOpen(!isNavbarOpen);
+  };
+
+  const logout = async () => {
+    console.log("logging out");
+    try {
+      await axios.get("/api/logout");
+      router.push("/");
+      setAuthUser(null);
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   const MobileNavigation = () => (
@@ -21,12 +35,15 @@ const Navbar = () => {
         className="absolute top-4 right-4 cursor-pointer text-white"
         onClick={toggleNavbar}
       >
-        <AiOutlineClose size="1.5em" />
+        <AiOutlineClose color="white" size="1.5em" />
       </span>
       <ul className="flex flex-col gap-4 font-medium text-white text-center justify-around mt-16">
         <li className={` flex items-center justify-center`}>
           {authUser ? (
-            <button className="bg-red-500 text-white hover:bg-red-600 font-semibold py-2 px-4 rounded shadow">
+            <button
+              onClick={() => logout}
+              className="bg-red-500 text-white hover:bg-red-600 font-semibold py-2 px-4 rounded shadow"
+            >
               Logout
             </button>
           ) : (
@@ -52,7 +69,10 @@ const Navbar = () => {
         <ul className="hidden md:block justify-end font-medium text-lg">
           <li className={`right-0 `}>
             {authUser ? (
-              <button className="bg-red-500 text-white hover:bg-red-600 font-semibold py-2 px-4 rounded shadow">
+              <button
+                onClick={() => logout()}
+                className="bg-red-500 text-white hover:bg-red-600 font-semibold py-2 px-4 rounded shadow"
+              >
                 Logout
               </button>
             ) : (
@@ -64,7 +84,7 @@ const Navbar = () => {
         </ul>
         {/* <Link href="/cart"> */}
         <Link href="/cart">
-          <FaShoppingCart className="text-white cursor-pointer" size={40} />
+          <FaShoppingCart className="text-white cursor-pointer" size={35} />
         </Link>
         {authUser ? (
           <p className="relative -top-5 -left-5 bg-blue-500 rounded-full p-1 ">
@@ -78,9 +98,9 @@ const Navbar = () => {
         {/* Mobile Navigation Toggle */}
         <span className="md:hidden cursor-pointer " onClick={toggleNavbar}>
           {isNavbarOpen ? (
-            <AiOutlineClose size="2em" />
+            <AiOutlineClose size="2em" color="white" />
           ) : (
-            <AiOutlineMenu size="1.5em" />
+            <AiOutlineMenu size="1.5em" color="white" />
           )}
         </span>
       </div>
