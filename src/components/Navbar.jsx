@@ -24,6 +24,7 @@ const Navbar = () => {
       await axios.get("/api/logout");
       router.push("/");
       setAuthUser(null);
+      setIsNavbarOpen(false);
     } catch (error) {
       console.log(error.message);
     }
@@ -41,15 +42,17 @@ const Navbar = () => {
         <li className={` flex items-center justify-center`}>
           {authUser ? (
             <button
-              onClick={() => logout}
+              onClick={() => logout()}
               className="bg-red-500 text-white hover:bg-red-600 font-semibold py-2 px-4 rounded shadow"
             >
               Logout
             </button>
           ) : (
-            <button className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
-              Login
-            </button>
+            <Link onClick={()=>setIsNavbarOpen(false)} href="/auth">
+              <button className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+                Login
+              </button>
+            </Link>
           )}
         </li>
       </ul>
@@ -76,13 +79,15 @@ const Navbar = () => {
                 Logout
               </button>
             ) : (
-              <button className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
-                Login
-              </button>
+              <Link href="/auth">
+                <button className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+                  Login
+                </button>
+              </Link>
             )}
           </li>
         </ul>
-        {/* <Link href="/cart"> */}
+
         <Link href="/cart">
           <FaShoppingCart className="text-white cursor-pointer" size={35} />
         </Link>
