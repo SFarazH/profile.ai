@@ -1,11 +1,11 @@
 import React from "react";
 import { FaXmark } from "react-icons/fa6";
 import { useCart } from "./cartCountContext";
+import axios from "axios";
 
-const CartItem = ({ data, onQuantityChange }) => {
+const CartItem = ({ data, onQuantityChange, setTemp }) => {
   const { fetchCartCount } = useCart();
   const updateQuantity = async (productId, action) => {
-    
     try {
       const response = await fetch("/api/cart/add", {
         method: "POST",
@@ -38,8 +38,29 @@ const CartItem = ({ data, onQuantityChange }) => {
     }
   };
 
+  const removeItemFromCart = async (productId) => {
+    try {
+      const response = await axios.delete("/api/cart/delete", {
+        data: { productId },
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = response.data;
+      console.log(data);
+
+      if (data.message === "Item removed from cart") {
+        setTemp((p) => p + 1);
+        fetchCartCount();
+      }
+    } catch (error) {
+      console.error("Error removing item from cart:", error);
+    }
+  };
+
   return (
-    <div className="flex flex-col space-y-3 py-6 text-left sm:flex-row sm:space-x-5 sm:space-y-0">
+    <div className="flex flex-col space-y-3 py-6 text-left sm:flex-row sm:space-x-5 sm:space-y-0 border-b-2 border-black">
       <div className="shrink-0 w-28">
         <img
           className="h-28 w-fit max-w-full rounded-lg object-cover flex justify-between"
@@ -64,8 +85,13 @@ const CartItem = ({ data, onQuantityChange }) => {
             <div className="sm:order-1">
               <div className="mx-auto flex h-8 items-stretch text-gray-600">
                 <button
+                  disabled={data.quantity === 1}
                   onClick={handleDecrement}
-                  className="flex items-center justify-center rounded-l-md bg-gray-200 px-4 transition hover:bg-black hover:text-white"
+                  className={`${
+                    data.quantity === 1
+                      ? "cursor-not-allowed"
+                      : "cursor-pointer"
+                  } flex items-center justify-center rounded-l-md bg-gray-200 px-4 transition hover:bg-black hover:text-white`}
                 >
                   -
                 </button>
@@ -84,7 +110,7 @@ const CartItem = ({ data, onQuantityChange }) => {
         </div>
 
         <div
-          onClick={() => console.log("del")}
+          onClick={() => removeItemFromCart(data.productId)}
           className="absolute top-0 right-0 flex sm:bottom-0 sm:top-auto cursor-pointer"
         >
           <FaXmark size={30} color="red" />

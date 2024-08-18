@@ -10,6 +10,7 @@ export default function Cart() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [cartItems, setCartItems] = useState([]);
+  const [temp, setTemp] = useState(0);
 
   const getCartDetails = async () => {
     const cartResponse = await axios.get("/api/cart/get");
@@ -28,12 +29,11 @@ export default function Cart() {
         console.error(`Error fetching product ${item.productId}:`, error);
         return {
           ...item,
-          product: {}, // Provide default values if the product fetch fails
+          product: {},
         };
       }
     });
 
-    // Wait for all product details to be fetched
     const cartItemsWithDetails = await Promise.all(productPromises);
     setCartItems(cartItemsWithDetails);
   };
@@ -48,7 +48,7 @@ export default function Cart() {
 
   useEffect(() => {
     getCartDetails();
-  }, []);
+  }, [temp]);
 
   useEffect(() => {
     if (!isLoading) {
@@ -74,6 +74,7 @@ export default function Cart() {
             key={item.productId}
             data={item}
             onQuantityChange={updateCartItemQuantity}
+            setTemp = {setTemp}
           />
         ))}
       </div>
