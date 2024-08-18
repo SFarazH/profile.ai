@@ -1,7 +1,9 @@
 import { login } from "@/utils/auth";
+import { dbConnect } from "@/utils/dbConnect";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
+  await dbConnect();
   try {
     const { email, password } = await req.json();
 

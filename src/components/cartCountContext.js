@@ -16,7 +16,7 @@ export function CartProvider({ children }) {
         credentials: "include",
       });
       const data = await response.json();
-      console.log(data, "cart data");
+      // console.log(data, "cart data");
       setCartCount(data.totalItems || 0);
     } catch (error) {
       console.error("Error fetching cart count:", error);
