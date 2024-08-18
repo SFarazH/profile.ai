@@ -2,7 +2,6 @@ import React from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import { useCart } from "./cartCountContext";
 
-
 const ProductCard = ({ data }) => {
   const { fetchCartCount } = useCart();
 
@@ -13,13 +12,13 @@ const ProductCard = ({ data }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ productId }),
+        body: JSON.stringify({ productId, action: "increment" }),
       });
 
       const data = await response.json();
       console.log(data);
 
-      // Fetch updated cart count
+
       fetchCartCount();
     } catch (error) {
       console.error("Error adding to cart:", error);

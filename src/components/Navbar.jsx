@@ -41,9 +41,11 @@ const Navbar = () => {
 
   return (
     <header className="flex justify-between items-center md:px-1 py-4 shadow-md fira sticky top-0 opacity-100 px-4 bg-neutral-900 z-50">
-      <h2 className="cursor-pointer font-bold flex items-center text-2xl  md:px-8">
-        profile.ai
-      </h2>
+      <Link href="/">
+        <h2 className="cursor-pointer font-bold flex items-center text-2xl  md:px-8 text-white">
+          profile.ai
+        </h2>
+      </Link>
 
       {/* Desktop Navigation */}
       <div className="flex items-center gap-4 md:px-8 py-2">
@@ -61,7 +63,7 @@ const Navbar = () => {
           </li>
         </ul>
         {/* <Link href="/cart"> */}
-        <Link href='/cart'>
+        <Link href="/cart">
           <FaShoppingCart className="text-white cursor-pointer" size={40} />
         </Link>
         {authUser ? (
