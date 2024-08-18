@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -7,6 +8,7 @@ const Register = () => {
     email: "",
     password: "",
   });
+  const router = useRouter();
 
   const [message, setMessage] = useState("");
 
@@ -35,6 +37,7 @@ const Register = () => {
 
     if (data.success) {
       setFormData({ name: "", email: "", password: "" });
+      router.push("/");
     }
   };
 
