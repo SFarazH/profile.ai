@@ -51,7 +51,7 @@ export async function POST(req) {
     }
 
     await cart.save();
-    return NextResponse.json({ message: "Cart updated", cart });
+    return NextResponse.json({ message: "Cart updated" });
   } catch (error) {
     console.error("Error updating cart:", error);
     return NextResponse.json({ message: error.message }, { status: 500 });

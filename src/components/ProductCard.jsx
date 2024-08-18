@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import { useCart } from "./cartCountContext";
+import { useAuth } from "./authContext";
 
 const ProductCard = ({ data }) => {
   const { fetchCartCount } = useCart();
+  const { authUser } = useAuth();
+  const [open, setOpen] = useState(false);
+  const [loginTC, setLoginTC] = useState(false);
 
   const addToCart = async (productId) => {
+    console.log(authUser);
+    if (authUser === null) {
+      setLoginTC(true);
+      setTimeout(() => {
+        setLoginTC(false);
+      }, 4000);
+    }
     try {
       const response = await fetch("/api/cart/add", {
         method: "POST",
@@ -16,8 +27,12 @@ const ProductCard = ({ data }) => {
       });
 
       const data = await response.json();
-      console.log(data);
-
+      if (data.message === "Cart updated") {
+        setOpen(true);
+        setTimeout(() => {
+          setOpen(false);
+        }, 5000);
+      }
 
       fetchCartCount();
     } catch (error) {
@@ -55,6 +70,31 @@ const ProductCard = ({ data }) => {
             Add to cart
           </div>
         </div>
+        {open && (
+          <div className="flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none px-2">
+            <div className="fixed inset-0 bg-black opacity-70"></div>
+            <div className="relative w-auto my-6 mx-auto max-w-3xl">
+              <div className="rounded-lg shadow-lg relative flex flex-col w-full bg-white p-5">
+                <p className="font-semibold text-lg text-green-500">
+                  Item added to cart!
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {loginTC && (
+          <div className="flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none px-2">
+            <div className="fixed inset-0 bg-black opacity-70"></div>
+            <div className="relative w-auto my-6 mx-auto max-w-3xl">
+              <div className="rounded-lg shadow-lg relative flex flex-col w-full bg-white p-5">
+                <p className="font-semibold text-lg">
+                  Please login to add to cart!
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
