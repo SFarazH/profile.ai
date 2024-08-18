@@ -1,8 +1,10 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useAuth } from "./authContext";
 
 export default function Login() {
+  const { verifyUser } = useAuth();
   const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
@@ -34,6 +36,7 @@ export default function Login() {
     setMessage(data.message);
 
     if (data.success) {
+      await verifyUser();
       setFormData({ email: "", password: "" });
       router.push("/");
     }

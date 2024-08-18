@@ -31,7 +31,7 @@ const ProductCard = ({ data }) => {
         setOpen(true);
         setTimeout(() => {
           setOpen(false);
-        }, 5000);
+        }, 3000);
       }
 
       fetchCartCount();
