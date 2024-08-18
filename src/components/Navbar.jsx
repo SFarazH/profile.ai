@@ -4,25 +4,12 @@ import React, { useState, useContext, useEffect } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { FaShoppingCart } from "react-icons/fa";
 import { useAuth } from "./authContext";
-import axios from "axios";
 import { useCart } from "./cartCountContext";
 
 const Navbar = () => {
   const { cartCount } = useCart();
-  // const [cartCount, setCount] = useState(0);
-  // useEffect(() => {
-  //   const getItems = async () => {
-  //     axios
-  //       .get("/api/cart/count", { withCredentials: true })
-  //       .then((res) => setCount(res.data.totalItems))
-  //       .catch((e) => console.error(e));
-  //   };
-  //   getItems();
-  // }, []);
   const { authUser, setAuthUser } = useAuth();
   const [isNavbarOpen, setIsNavbarOpen] = useState(false);
-  const navLinkClasses =
-    "cursor-pointer hover:bg-gray-200 hover:text-black transition ease-in-out duration-200 rounded-sm";
 
   const toggleNavbar = () => {
     setIsNavbarOpen(!isNavbarOpen);
@@ -74,7 +61,9 @@ const Navbar = () => {
           </li>
         </ul>
         {/* <Link href="/cart"> */}
-        <FaShoppingCart className="text-white cursor-pointer" size={40} />
+        <Link href='/cart'>
+          <FaShoppingCart className="text-white cursor-pointer" size={40} />
+        </Link>
         {authUser ? (
           <p className="relative -top-5 -left-5 bg-blue-500 rounded-full p-1 ">
             {cartCount}
